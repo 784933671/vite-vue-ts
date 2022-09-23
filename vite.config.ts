@@ -12,7 +12,9 @@ export default defineConfig(({ command, mode }) => {
   return {
     base: env.VITE_BASE_URL,
     plugins: [
-      vue(),
+      vue({
+        reactivityTransform: true,
+      }),
       vueSetupExtend(),
       AutoImport({
         imports: ["vue", "vue-router", "vuex"], //! 自动导入vue，vuex，vue-router的api

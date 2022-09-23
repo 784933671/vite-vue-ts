@@ -1,6 +1,7 @@
 <template>
     <div>
         <el-icons icon-class="logo" class-name="logo-icon"></el-icons>
+        <button @click="a++">{{a}}</button>
     </div>
 </template>
 <script lang="ts" setup name='layout'>
@@ -8,6 +9,8 @@ import { getRouterList } from '@/api'
 getRouterList().then(res => {
 
 })
+const a = $ref(1);
+console.log(a, "~~~~~~~~~~~~~~~~~~~~111111~~~~~~~~~~~`")
 onBeforeMount(() => {
     console.log('2.组件挂载页面之前执行----onBeforeMount')
 })
