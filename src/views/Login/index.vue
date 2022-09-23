@@ -1,7 +1,7 @@
 <template>
     <div>
         <el-icons icon-class="logo" class-name="logo-icon"></el-icons>
-        <button @click="a++">{{a}}</button>
+        <button @click="a++">{{b}}</button>
     </div>
 </template>
 <script lang="ts" setup name='layout'>
@@ -10,7 +10,10 @@ getRouterList().then(res => {
 
 })
 const a = $ref(1);
-console.log(a, "~~~~~~~~~~~~~~~~~~~~111111~~~~~~~~~~~`")
+const b = $computed(() => {
+    return a + 5    // 注意 ref 包装过的值在value中
+})
+console.log(a, b, "~~~~~~~~~~~~~~~~~~~~111111~~~~~~~~~~~`")
 onBeforeMount(() => {
     console.log('2.组件挂载页面之前执行----onBeforeMount')
 })

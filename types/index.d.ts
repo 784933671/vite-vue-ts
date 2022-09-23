@@ -1,6 +1,5 @@
 export {};
 declare global {
-  const $ref: typeof import("vue/macros")["$ref"];
   interface AnyObject {
     [key: string]: any;
   }
