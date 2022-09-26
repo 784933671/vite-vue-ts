@@ -13,10 +13,12 @@ declare global {
     | "json"
     | "text"
     | "stream";
+
   declare type AxiosConfig = {
     params?: any;
     baseURL?: string;
     responseType?: AxiosResponseType;
+    headers?: Record<string | "authentication", string | number | boolean>;
   };
   interface IMenubarList {
     parentId?: number | string;

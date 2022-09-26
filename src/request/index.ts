@@ -15,6 +15,7 @@ const defaultConfig = {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json;charset=UTF-8",
     "X-Requested-With": "XMLHttpRequest",
+    authentication: true, //是否鉴权 默认都需要鉴权
   },
   // 数组格式参数序列化
   paramsSerializer: (params: AnyObject) =>
@@ -32,7 +33,6 @@ class PureHttp {
     PureHttp.axiosInstance.interceptors.request.use(
       (config: AxiosRequestConfig) => {
         const Authorization: string | null = localStorage.getItem("token");
-        console.log(config, "config");
         //authentication  是否开启鉴权模式
         if (
           Authorization &&
@@ -81,21 +81,9 @@ class PureHttp {
   }
 
   get<T = any>(url: string, option: AxiosConfig): AxiosPromise<T> {
-    option = Object.assign(
-      {
-        headers: { authentication: true },
-      },
-      option
-    );
     return PureHttp.axiosInstance.get(url, option);
   }
   post<T = any>(url: string, data: any, option?: AxiosConfig): AxiosPromise<T> {
-    option = Object.assign(
-      {
-        headers: { authentication: true },
-      },
-      option
-    );
     return PureHttp.axiosInstance.post(url, data, option);
   }
 }
