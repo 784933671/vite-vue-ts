@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-icons icon-class="logo" class-name="logo-icon"></el-icons>
+        <el-icons name="logo"></el-icons>
         <button @click="a++">{{b}}</button>
     </div>
 </template>
