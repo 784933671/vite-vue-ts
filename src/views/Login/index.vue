@@ -1,6 +1,6 @@
 <template>
     <div>
-        <el-icons name="logo"></el-icons>
+        <svg-icon name="logo" />
         <img src="@/assets/images/app-download.png" />
         <button @click="a++">{{b}}</button>
     </div>
