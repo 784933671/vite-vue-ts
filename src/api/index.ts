@@ -4,5 +4,9 @@ const api = {
 };
 //获取菜单列表
 export const getRouterList = () => {
-  return http.post(api.getRouterList, { id: 3 });
+  return http.post(
+    api.getRouterList,
+    { id: 3 },
+    { headers: { authentication: false } }
+  );
 };

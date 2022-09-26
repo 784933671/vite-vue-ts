@@ -13,7 +13,6 @@ declare global {
     | "json"
     | "text"
     | "stream";
-
   declare type AxiosConfig = {
     params?: any;
     baseURL?: string;

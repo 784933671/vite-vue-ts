@@ -7,6 +7,7 @@ import axios, {
   AxiosPromise,
 } from "axios";
 import qs from "qs";
+import router from "@/router";
 const defaultConfig = {
   baseURL: import.meta.env.VITE_HTTP_BASE_URL,
   timeout: 20000,
@@ -31,8 +32,12 @@ class PureHttp {
     PureHttp.axiosInstance.interceptors.request.use(
       (config: AxiosRequestConfig) => {
         const Authorization: string | null = localStorage.getItem("token");
-        //如果存在token，在请求头中添加token
-        if (Authorization) {
+        console.log(config, "config");
+        //authentication  是否开启鉴权模式
+        if (
+          Authorization &&
+          (config.headers as AxiosRequestHeaders)["authentication"]
+        ) {
           (config.headers as AxiosRequestHeaders)["Authorization"] =
             Authorization;
         }
@@ -62,9 +67,10 @@ class PureHttp {
             error.code === "ECONNABORTED" &&
             error.message.indexOf("timeout") !== -1
           ) {
-            return new Promise(() => {});
+            Promise.reject({ msg: "请求超时！" });
           } else if (error.response?.status === 401) {
             localStorage.removeItem("token");
+            router.replace("/login");
             return Promise.reject({ msg: "登录失效！" });
           } else {
             return Promise.reject(error?.response?.data || error);
@@ -75,9 +81,21 @@ class PureHttp {
   }
 
   get<T = any>(url: string, option: AxiosConfig): AxiosPromise<T> {
+    option = Object.assign(
+      {
+        headers: { authentication: true },
+      },
+      option
+    );
     return PureHttp.axiosInstance.get(url, option);
   }
   post<T = any>(url: string, data: any, option?: AxiosConfig): AxiosPromise<T> {
+    option = Object.assign(
+      {
+        headers: { authentication: true },
+      },
+      option
+    );
     return PureHttp.axiosInstance.post(url, data, option);
   }
 }
