@@ -18,7 +18,7 @@ const defaultConfig = {
     authentication: true, //是否鉴权 默认都需要鉴权
   },
   // 数组格式参数序列化
-  paramsSerializer: (params: AnyObject) =>
+  paramsSerializer: (params: IObject<Object>) =>
     qs.stringify(params, { indices: false }),
 };
 class PureHttp {
@@ -83,7 +83,11 @@ class PureHttp {
   get<T = any>(url: string, option: AxiosConfig): AxiosPromise<T> {
     return PureHttp.axiosInstance.get(url, option);
   }
-  post<T = any>(url: string, data: any, option?: AxiosConfig): AxiosPromise<T> {
+  post<T = any>(
+    url: string,
+    data: IObject<Object> | Array<IObject<Object>>,
+    option?: AxiosConfig
+  ): AxiosPromise<T> {
     return PureHttp.axiosInstance.post(url, data, option);
   }
 }

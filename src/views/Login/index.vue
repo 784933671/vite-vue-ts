@@ -1,10 +1,11 @@
 <template>
     <div>
         <el-icons name="logo"></el-icons>
+        <img src="@/assets/images/app-download.png" />
         <button @click="a++">{{b}}</button>
     </div>
 </template>
-<script lang="ts" setup name='layout'>
+<script lang="ts" setup name='login'>
 import { getRouterList } from '@/api'
 getRouterList().then(res => {
 

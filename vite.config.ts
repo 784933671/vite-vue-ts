@@ -5,6 +5,7 @@ import { createSvgIconsPlugin } from "vite-plugin-svg-icons"; //!svg图标插件
 import AutoImport from "unplugin-auto-import/vite"; // 导入自动导入插件
 import Components from "unplugin-vue-components/vite"; // 引入组件
 import vueSetupExtend from "vite-plugin-vue-setup-extend";
+import ViteImages from "vite-plugin-vue-images";
 export default defineConfig(({ command, mode }) => {
   const pathSrc = resolve(__dirname, "types");
   const root = process.cwd();
@@ -16,6 +17,12 @@ export default defineConfig(({ command, mode }) => {
         reactivityTransform: true,
       }),
       vueSetupExtend(),
+      ViteImages({
+        dirs: ["src/assets/images"], // 图像目录的相对路径
+        extensions: ["jpg", "jpeg", "png", "svg", "webp"], // 有效的图像扩展
+        customResolvers: [], // 覆盖名称->图像路径解析的默认行为
+        customSearchRegex: "([a-zA-Z0-9_-]+)", // 重写搜索要替换的变量的Regex。
+      }),
       AutoImport({
         imports: ["vue", "vue/macros", "vue-router", "vuex"], //! 自动导入vue，vuex，vue-router的api
         dts: resolve(pathSrc, "auto-imports.d.ts"),
