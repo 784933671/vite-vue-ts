@@ -1,7 +1,7 @@
 <template>
     <div>
         <svg-icon name="logo" />
-        <img src="@/assets/images/app-download.png" />
+        <!-- <img src="@/assets/images/app-download.png" /> -->
         <button @click="a++">{{b}}</button>
     </div>
 </template>
@@ -9,6 +9,7 @@
 import { getRouterList } from '@/api'
 getRouterList().then(res => {
     if (res.code == 200) {
+        console.log(res.data)
     }
 })
 const a = $ref(1);

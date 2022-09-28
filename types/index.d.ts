@@ -1,8 +1,5 @@
 export {};
 declare global {
-  interface AnyObject {
-    [key: string]: any;
-  }
   interface IObject<T> {
     [index: string]: T;
   }

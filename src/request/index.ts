@@ -8,25 +8,24 @@ import type {
 import qs from "qs";
 import router from "@/router";
 import { HRequestConfig } from "./config";
-const defaultConfig = {
+const defaultConfig: HRequestConfig = {
   baseURL: import.meta.env.VITE_HTTP_BASE_URL,
   timeout: 20000,
   headers: {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json;charset=UTF-8",
     "X-Requested-With": "XMLHttpRequest",
-    authentication: true, //是否鉴权 默认都需要鉴权
   },
+  authentication: true, //是否鉴权 默认都需要鉴权
   // 数组格式参数序列化
-  paramsSerializer: (params: IObject<Object>) =>
+  paramsSerializer: (params: IObject<any>) =>
     qs.stringify(params, { indices: false }),
 };
 class HttpRequest {
   instance: AxiosInstance;
   constructor() {
     this.instance = axios.create(defaultConfig);
-
-    // 添加请求拦截器
+    //! 添加请求拦截器
     this.instance.interceptors.request.use(
       (config: HRequestConfig) => {
         const Authorization: string | null = localStorage.getItem("token");
@@ -42,7 +41,7 @@ class HttpRequest {
         return Promise.reject(error);
       }
     );
-    // 添加响应拦截器
+    //! 添加响应拦截器
     this.instance.interceptors.response.use(
       (response: AxiosResponse) => {
         // 对响应数据做点什么
