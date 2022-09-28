@@ -4,10 +4,10 @@ import axios, {
   AxiosError,
   AxiosRequestConfig,
   AxiosRequestHeaders,
-  AxiosPromise,
 } from "axios";
 import qs from "qs";
 import router from "@/router";
+import { HRequestConfig } from "./config";
 const defaultConfig = {
   baseURL: import.meta.env.VITE_HTTP_BASE_URL,
   timeout: 20000,
@@ -31,13 +31,10 @@ class PureHttp {
   httpInterceptorsRequest() {
     // 添加请求拦截器
     PureHttp.axiosInstance.interceptors.request.use(
-      (config: AxiosRequestConfig) => {
+      (config: HRequestConfig) => {
         const Authorization: string | null = localStorage.getItem("token");
         //authentication  是否开启鉴权模式
-        if (
-          Authorization &&
-          (config.headers as AxiosRequestHeaders)["authentication"]
-        ) {
+        if (Authorization && config.authentication) {
           (config.headers as AxiosRequestHeaders)["Authorization"] =
             Authorization;
         }
