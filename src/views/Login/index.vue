@@ -15,7 +15,7 @@ const a = $ref(1);
 const b = $computed(() => {
     return a + 5    // 注意 ref 包装过的值在value中
 })
-console.log(a, b, "~~~~~~~~~~~~~~~~~~~~111111~~~~~~~~~~~`")
+console.log(a, b, "~~~~~~~~~~~~~~~~~~~~2222222222222~~~~~~~~~~~`")
 onBeforeMount(() => {
     console.log('2.组件挂载页面之前执行----onBeforeMount')
 })
