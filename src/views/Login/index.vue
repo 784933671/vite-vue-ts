@@ -8,7 +8,8 @@
 <script lang="ts" setup name='login'>
 import { getRouterList } from '@/api'
 getRouterList().then(res => {
-
+    if (res.code == 200) {
+    }
 })
 const a = $ref(1);
 const b = $computed(() => {

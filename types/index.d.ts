@@ -6,6 +6,10 @@ declare global {
   interface IObject<T> {
     [index: string]: T;
   }
+  interface DataType<T> {
+    data: T;
+    code: number;
+  }
   declare type AxiosResponseType =
     | "arraybuffer"
     | "blob"

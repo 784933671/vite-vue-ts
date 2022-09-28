@@ -80,14 +80,14 @@ class PureHttp {
     );
   }
 
-  get<T = any>(url: string, option: AxiosConfig): AxiosPromise<T> {
+  get<T = any>(url: string, option: AxiosConfig): Promise<T> {
     return PureHttp.axiosInstance.get(url, option);
   }
   post<T = any>(
     url: string,
     data: IObject<Object> | Array<IObject<Object>>,
     option?: AxiosConfig
-  ): AxiosPromise<T> {
+  ): Promise<T> {
     return PureHttp.axiosInstance.post(url, data, option);
   }
 }
