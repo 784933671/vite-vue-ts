@@ -17,12 +17,6 @@ export const allowRouter: Array<IMenubarList> = [
     component: Components["LoginIndex"],
     meta: { title: "登录" },
   },
-  {
-    name: "Home",
-    path: "/home",
-    component: Components["HomeIndex"],
-    meta: { title: "登录" },
-  },
 ];
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_BASE_URL.replace(/\./g, "")),
