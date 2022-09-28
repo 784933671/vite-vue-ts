@@ -1,9 +1,9 @@
-import http from "@/request";
+import HttpRequest from "@/request";
 
 const api = {
   getRouterList: "/menu/getMenuToTreeByUserId",
 };
 //获取菜单列表
 export const getRouterList = () => {
-  return http.post<DataType<IMenubarList>>(api.getRouterList, { id: 3 });
+  return HttpRequest.post<DataType<IMenubarList>>(api.getRouterList, { id: 3 });
 };

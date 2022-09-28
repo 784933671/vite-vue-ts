@@ -1,8 +1,8 @@
-import axios, {
+import axios from "axios";
+import type {
   AxiosInstance,
   AxiosResponse,
   AxiosError,
-  AxiosRequestConfig,
   AxiosRequestHeaders,
 } from "axios";
 import qs from "qs";
@@ -21,16 +21,13 @@ const defaultConfig = {
   paramsSerializer: (params: IObject<Object>) =>
     qs.stringify(params, { indices: false }),
 };
-class PureHttp {
+class HttpRequest {
+  instance: AxiosInstance;
   constructor() {
-    this.httpInterceptorsRequest();
-    this.httpInterceptorsResponse();
-  }
-  static axiosInstance: AxiosInstance = axios.create(defaultConfig);
-  static loadingToast: Array<AnyObject> = [];
-  httpInterceptorsRequest() {
+    this.instance = axios.create(defaultConfig);
+
     // 添加请求拦截器
-    PureHttp.axiosInstance.interceptors.request.use(
+    this.instance.interceptors.request.use(
       (config: HRequestConfig) => {
         const Authorization: string | null = localStorage.getItem("token");
         //authentication  是否开启鉴权模式
@@ -45,10 +42,8 @@ class PureHttp {
         return Promise.reject(error);
       }
     );
-  }
-  httpInterceptorsResponse() {
     // 添加响应拦截器
-    PureHttp.axiosInstance.interceptors.response.use(
+    this.instance.interceptors.response.use(
       (response: AxiosResponse) => {
         // 对响应数据做点什么
         if (response?.status === 200) {
@@ -76,16 +71,15 @@ class PureHttp {
       }
     );
   }
-
   get<T = any>(url: string, option: AxiosConfig): Promise<T> {
-    return PureHttp.axiosInstance.get(url, option);
+    return this.instance.get(url, option);
   }
   post<T = any>(
     url: string,
     data: IObject<Object> | Array<IObject<Object>>,
     option?: AxiosConfig
   ): Promise<T> {
-    return PureHttp.axiosInstance.post(url, data, option);
+    return this.instance.post(url, data, option);
   }
 }
-export default new PureHttp();
+export default new HttpRequest();
