@@ -1,6 +1,7 @@
 import type { App } from "vue";
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import { components } from "./asyncRouter";
+import { axiosPromiseStore } from "@/store/modules/axiosPromise";
 const Components: IObject<() => Promise<typeof import("*.vue")>> =
   Object.assign({}, components, {
     Layout: (() => import("@/layout/index.vue")) as unknown as () => Promise<
@@ -16,6 +17,12 @@ export const allowRouter: Array<IMenubarList> = [
     component: Components["LoginIndex"],
     meta: { title: "登录" },
   },
+  {
+    name: "Home",
+    path: "/home",
+    component: Components["HomeIndex"],
+    meta: { title: "登录" },
+  },
 ];
 const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_BASE_URL.replace(/\./g, "")),
@@ -23,6 +30,8 @@ const router = createRouter({
 });
 
 router.beforeEach(async (to, from) => {
+  const useAxiosPromiseStore = axiosPromiseStore();
+  useAxiosPromiseStore.clearAllAxiosPromisCancel();
   if (to.path.toLocaleLowerCase() === "/login".toLocaleLowerCase()) {
     return true;
   }

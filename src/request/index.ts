@@ -8,6 +8,7 @@ import type {
 import qs from "qs";
 import router from "@/router";
 import { HRequestConfig } from "./config";
+import { axiosPromiseStore } from "@/store/modules/axiosPromise";
 const defaultConfig: HRequestConfig = {
   baseURL: import.meta.env.VITE_HTTP_BASE_URL,
   timeout: 20000,
@@ -18,16 +19,39 @@ const defaultConfig: HRequestConfig = {
   },
   authentication: true, //是否鉴权 默认都需要鉴权
   // 数组格式参数序列化
-  paramsSerializer: (params: IObject<any>) =>
-    qs.stringify(params, { indices: false }),
+  paramsSerializer: (params: any) => {
+    return qs.stringify(params, { indices: false });
+  },
 };
 class HttpRequest {
   instance: AxiosInstance;
+  axiosPromiseStore: any;
+  //!组装请求地址和请求参数
+  getRequestIdentify = (config: HRequestConfig, isReuest = false): string => {
+    let url = config.url as string;
+    if (isReuest) {
+      url = config.baseURL + url.substring(1, url.length);
+    }
+    return config.method === "get"
+      ? encodeURIComponent(url + JSON.stringify(config.params))
+      : encodeURIComponent(config.url + JSON.stringify(config.data));
+  };
   constructor() {
+    this.axiosPromiseStore = axiosPromiseStore();
     this.instance = axios.create(defaultConfig);
     //! 添加请求拦截器
     this.instance.interceptors.request.use(
       (config: HRequestConfig) => {
+        //增加请求的cancelToken
+        let that = this;
+        let requestData = this.getRequestIdentify(config, true);
+        this.axiosPromiseStore.clearAxiosPromisCancel(requestData);
+        config.cancelToken = new axios.CancelToken(function executor(c) {
+          that.axiosPromiseStore.sourceActions({
+            u: requestData,
+            f: c,
+          });
+        });
         const Authorization: string | null = localStorage.getItem("token");
         //authentication  是否开启鉴权模式
         if (Authorization && config.authentication) {
@@ -58,7 +82,7 @@ class HttpRequest {
             error.code === "ECONNABORTED" &&
             error.message.indexOf("timeout") !== -1
           ) {
-            Promise.reject({ msg: "请求超时！" });
+            return Promise.reject({ msg: "请求超时！" });
           } else if (error.response?.status === 401) {
             localStorage.removeItem("token");
             router.replace("/login");
@@ -70,7 +94,7 @@ class HttpRequest {
       }
     );
   }
-  get<T = any>(url: string, option: AxiosConfig): Promise<T> {
+  get<T = any>(url: string, option?: AxiosConfig): Promise<T> {
     return this.instance.get(url, option);
   }
   post<T = any>(
