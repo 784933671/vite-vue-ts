@@ -1,12 +1,7 @@
+import type { PropType } from "vue";
 export {};
 declare global {
-  interface IObject<T> {
-    [index: string]: T;
-  }
-  interface DataType<T> {
-    data: T;
-    code: number;
-  }
+  declare type PropsType<T> = PropType<T>;
   declare type AxiosResponseType =
     | "arraybuffer"
     | "blob"
@@ -21,6 +16,13 @@ declare global {
     responseType?: AxiosResponseType;
     headers?: Record<string | "authentication", string | number | boolean>;
   };
+  interface IObject<T> {
+    [index: string]: T;
+  }
+  interface DataType<T> {
+    data: T;
+    code: number;
+  }
   interface IMenubarList {
     parentId?: number | string;
     id?: number | string;
