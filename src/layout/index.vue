@@ -1,4 +1,5 @@
 <template>
+    <button @click="a++">{{b}}</button>
     <Suspense>
         <template #default>
             <router-view v-slot="{ Component, route }">
@@ -13,9 +14,12 @@
     </Suspense>
 </template>
 <script lang="ts" setup name='layout'>
-import { getRouterList } from '@/api'
-getRouterList().then(res => {
-
+const a = $ref(1);
+const b = $computed(() => {
+    return a + 5    // 注意 ref 包装过的值在value中
+})
+onBeforeMount(() => {
+    console.log('2.组件挂载页面之前执行----layout')
 })
 </script>
 <style lang='scss' scoped>

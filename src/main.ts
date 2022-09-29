@@ -1,6 +1,8 @@
 import { createApp } from "vue";
 import App from "./App.vue";
 import "virtual:svg-icons-register";
+// 引入动画
+import "animate.css";
 // 引入状态管理
 import { setupStore } from "@/store";
 // 路由
