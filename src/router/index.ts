@@ -52,6 +52,14 @@ const removeAllRoute = async (): Promise<void> => {
   }
   registerRouteFresh = true;
 };
+//根据名字批量删除localStorage
+const removeLocalStorageList = async (
+  localStorageList: string[]
+): Promise<void> => {
+  for (let item of localStorageList) {
+    localStorage.removeItem(item);
+  }
+};
 
 router.beforeEach(async (to, from) => {
   if (from === START_LOCATION) {
@@ -62,7 +70,10 @@ router.beforeEach(async (to, from) => {
   useAxiosPromiseStore.clearAllAxiosPromisCancel();
   //登录页面直接放行并删除动态添加的路由为避免再次登录时重复添加
   if (to.path.toLocaleLowerCase() === "/login".toLocaleLowerCase()) {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userInfo");
     await removeAllRoute();
+    await removeLocalStorageList(["token", "userInfo"]);
     return true;
   }
   //获取token并检测token是否存在 不存在则跳转登陆页面  存在则继续执行下面动态添加菜单逻辑
@@ -70,6 +81,7 @@ router.beforeEach(async (to, from) => {
   if (!token) {
     //删除动态添加的路由为避免再次登录时重复添加
     await removeAllRoute();
+    await removeLocalStorageList(["token", "userInfo"]);
     router.replace("/login");
     return false;
   }

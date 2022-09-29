@@ -9,6 +9,16 @@ export const useMenuStore = defineStore({
   },
   persist: {
     enabled: true,
+    strategies: [
+      {
+        //key的名称
+        key: "menuList",
+        //更改默认存储，我更改为localStorage
+        storage: localStorage,
+        // 默认是全部进去存储
+        paths: ["menuList"],
+      },
+    ],
   },
   getters: {
     getMenuList(): IMenubarList[] {
