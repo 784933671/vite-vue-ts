@@ -24,15 +24,15 @@ export const allowRouter: Array<IMenubarList> = [
   {
     name: "Layout",
     path: "/",
-    redirect: "/home",
+    redirect: "/home/index",
     component: Components["Layout"],
-    meta: { title: "仪表盘", icon: "el-icon-eleme" },
+    meta: { title: "首页", icon: "el-icon-eleme" },
     children: [
       {
         name: "404",
         path: "404",
         component: Components["Error404"],
-        meta: { title: "404", icon: "el-icon-eleme" },
+        meta: { title: "404" },
       },
     ],
   },
@@ -93,7 +93,7 @@ router.beforeEach(async (to, from) => {
     }
     router.addRoute({
       name: "Error",
-      path: "/:error*",
+      path: "/:path(.*)*",
       redirect: "/404",
     });
     registerRouteFresh = false;

@@ -1,5 +1,7 @@
 <template>
-    <div>404</div>
+    <div class="error-404">
+        <svg-icon class="icon" name="404" />
+    </div>
 </template>
 <script lang="ts" setup name='404'>
 const data = reactive({
@@ -13,5 +15,14 @@ onMounted(() => {
 })
 </script>
 <style lang='scss' scoped>
+.error-404 {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 
+    .icon {
+        width: 350px;
+        height: 350px;
+    }
+}
 </style>

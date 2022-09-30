@@ -1,6 +1,5 @@
 <template>
     <div>
-        <svg-icon name="logo" />
         <button @click="a++">{{b}}</button>
         <button @click="loginFn">登录</button>
     </div>
