@@ -3,6 +3,8 @@ import App from "./App.vue";
 import "virtual:svg-icons-register";
 // 引入动画
 import "animate.css";
+// 引入全局样式
+import "@/assets/scss/global.scss";
 // 引入状态管理
 import { setupStore } from "@/store";
 // 路由
