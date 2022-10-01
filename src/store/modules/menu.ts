@@ -27,7 +27,11 @@ export const useMenuStore = defineStore({
   },
   actions: {
     setMenu(menuList: IMenubarList[]) {
-      this.menuList = menuList;
+      this.menuList = [...menuList,{
+      name: "redirect404",
+      path: "/:path(.*)*",
+      redirect: "/404",
+    }];
     },
   },
 });
