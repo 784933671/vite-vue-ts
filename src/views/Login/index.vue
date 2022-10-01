@@ -25,7 +25,7 @@ const loginFn = () => {
                     if (res.code == 200) {
                         menuStore.setMenu(res.data)
                         //跳转到首页
-                        router.push('/prodoct/index')
+                        router.push('/product/index')
                     }
                 })
             }
