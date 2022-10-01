@@ -24,7 +24,7 @@ export const allowRouter: Array<IMenubarList> = [
   {
     name: "Layout",
     path: "/",
-    redirect: "/home/index",
+    redirect: "/product/index",
     component: Components["Layout"],
     meta: { title: "首页", icon: "el-icon-eleme" },
     children: [
@@ -46,11 +46,11 @@ let registerRouteFresh = $ref(true);
 
 //删除动态添加的路由
 const removeAllRoute = async (): Promise<void> => {
+  registerRouteFresh = true;
   const menuStore = useMenuStore();
   for (let item of menuStore.getMenuList) {
     router.removeRoute(item.name);
   }
-  registerRouteFresh = true;
 };
 //根据名字批量删除localStorage
 const removeLocalStorageList = async (
@@ -91,11 +91,6 @@ router.beforeEach(async (to, from) => {
     for (let item of generatorDynamicRouter(menuStore.getMenuList)) {
       router.addRoute(item as RouteRecordRaw);
     }
-    router.addRoute({
-      name: "Error",
-      path: "/:path(.*)*",
-      redirect: "/404",
-    });
     registerRouteFresh = false;
     return to.fullPath;
   }
