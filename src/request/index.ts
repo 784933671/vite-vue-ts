@@ -1,11 +1,5 @@
 import axios from "axios";
-import type {
-  AxiosInstance,
-  AxiosResponse,
-  AxiosError,
-  AxiosRequestHeaders,
-} from "axios";
-import qs from "qs";
+import type { AxiosInstance, AxiosResponse, AxiosRequestHeaders } from "axios";
 import router from "@/router";
 import { HRequestConfig } from "./config";
 import { axiosPromiseStore } from "@/store/modules/axiosPromise";
@@ -19,8 +13,11 @@ const defaultConfig: HRequestConfig = {
   },
   authentication: true, //是否鉴权 默认都需要鉴权
   // 数组格式参数序列化
-  paramsSerializer: (params: any) => {
-    return qs.stringify(params, { indices: false });
+  paramsSerializer: {
+    indexes: null, // array indexes format (null - no brackets, false - empty brackets, true - brackets with indexes)
+  },
+  validateStatus: function (status) {
+    return status >= 200 && status < 300; // default
   },
 };
 class HttpRequest {
@@ -60,7 +57,7 @@ class HttpRequest {
         }
         return config;
       },
-      function (error: AxiosError) {
+      function (error) {
         // 对请求错误做些什么
         return Promise.reject(error);
       }
@@ -73,22 +70,24 @@ class HttpRequest {
           return response.data;
         }
       },
-      (error: AxiosError) => {
+      (error) => {
         // 对响应错误做点什么
         if (axios.isCancel(error)) {
           return new Promise(() => {});
         } else {
           if (
-            error.code === "ECONNABORTED" &&
+            error.code === axios.AxiosError.ECONNABORTED &&
             error.message.indexOf("timeout") !== -1
           ) {
+            console.log();
             return Promise.reject({ msg: "请求超时！" });
           } else if (error.response?.status === 401) {
             localStorage.removeItem("token");
             router.replace("/login");
             return Promise.reject({ msg: "登录失效！" });
           } else {
-            return Promise.reject(error?.response?.data || error);
+            console.log(error, "error");
+            return Promise.reject(() => {});
           }
         }
       }
