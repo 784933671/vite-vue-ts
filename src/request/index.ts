@@ -103,5 +103,12 @@ class HttpRequest {
   ): Promise<T> {
     return this.instance.post(url, data, option);
   }
+  postForm<T = any>(
+    url: string,
+    data: IObject<Object> | Array<IObject<Object>>,
+    option?: AxiosConfig
+  ): Promise<T> {
+    return this.instance.postForm(url, data, option);
+  }
 }
 export default new HttpRequest();
