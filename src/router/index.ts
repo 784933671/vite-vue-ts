@@ -10,6 +10,7 @@ import {
 import { components, generatorDynamicRouter } from "./asyncRouter";
 import { axiosPromiseStore } from "@/store/modules/axiosPromise";
 import { useMenuStore } from "@/store/modules/menu";
+import { removeLocalStorageList } from "@/utils/tools";
 const Components: IObject<() => Promise<typeof import("*.vue")>> =
   Object.assign({}, components);
 
@@ -52,14 +53,6 @@ const removeAllRoute = async (): Promise<void> => {
     router.removeRoute(item.name);
   }
   menuStore.$reset();
-};
-//根据名字批量删除localStorage
-const removeLocalStorageList = async (
-  localStorageList: string[]
-): Promise<void> => {
-  for (let item of localStorageList) {
-    localStorage.removeItem(item);
-  }
 };
 
 router.beforeEach(async (to, from) => {

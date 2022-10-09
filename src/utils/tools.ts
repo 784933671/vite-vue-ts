@@ -8,3 +8,11 @@ export function ucfirst(str: string): string {
   );
   return strToLowerCaseNew.replace(/\//g, "");
 }
+//根据名字批量删除localStorage
+export async function removeLocalStorageList(
+  localStorageList: string[]
+): Promise<void> {
+  for (let item of localStorageList) {
+    localStorage.removeItem(item);
+  }
+}
