@@ -51,6 +51,7 @@ const removeAllRoute = async (): Promise<void> => {
   for (let item of menuStore.getMenuList) {
     router.removeRoute(item.name);
   }
+  menuStore.$reset();
 };
 //根据名字批量删除localStorage
 const removeLocalStorageList = async (
@@ -70,8 +71,6 @@ router.beforeEach(async (to, from) => {
   useAxiosPromiseStore.clearAllAxiosPromisCancel();
   //登录页面直接放行并删除动态添加的路由为避免再次登录时重复添加
   if (to.path.toLocaleLowerCase() === "/login".toLocaleLowerCase()) {
-    localStorage.removeItem("token");
-    localStorage.removeItem("userInfo");
     await removeAllRoute();
     await removeLocalStorageList(["token", "userInfo"]);
     return true;
