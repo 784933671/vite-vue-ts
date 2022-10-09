@@ -17,7 +17,7 @@ export default defineConfig(({ command, mode }) => {
       }),
       vueSetupExtend(),
       AutoImport({
-        imports: ["vue", "vue/macros", "vue-router", "vuex"], //! 自动导入vue，vuex，vue-router的api
+        imports: ["vue", "vue-router"], //! 自动导入vue，vuex，vue-router的api
         dts: resolve(pathSrc, "auto-imports.d.ts"),
       }),
       Components({
