@@ -47,10 +47,13 @@ let registerRouteFresh = $ref(true);
 
 //删除动态添加的路由
 const removeAllRoute = async (): Promise<void> => {
-  registerRouteFresh = true;
   const menuStore = useMenuStore();
-  for (let item of menuStore.getMenuList) {
-    router.removeRoute(item.name);
+  if (!registerRouteFresh) {
+    //刷新页面时不删除路由 路由会自动清除
+    registerRouteFresh = true;
+    for (let item of menuStore.getMenuList) {
+      router.removeRoute(item.name);
+    }
   }
   menuStore.$reset();
 };
@@ -71,9 +74,6 @@ router.beforeEach(async (to, from) => {
   //获取token并检测token是否存在 不存在则跳转登陆页面  存在则继续执行下面动态添加菜单逻辑
   const token = localStorage.getItem("token");
   if (!token) {
-    //删除动态添加的路由为避免再次登录时重复添加
-    await removeAllRoute();
-    await removeLocalStorageList(["token", "userInfo"]);
     router.replace("/login");
     return false;
   }
