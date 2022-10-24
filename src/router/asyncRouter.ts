@@ -1,12 +1,12 @@
 import { ucfirst } from "@/utils/tools";
 // 动态路由名称映射表
 const components: IObject<() => Promise<typeof import("*.vue")>> = {
-  Layout: (() => import("@/layout/index.vue")) as unknown as () => Promise<
-    typeof import("*.vue")
-  >,
+  Layout: defineAsyncComponent(
+    () => import("@/layout/index.vue")
+  ) as unknown as () => Promise<typeof import("*.vue")>,
 };
 /*
- *@描述:查找所有views下的vue文件并引入
+ *@描述:查找所有views下的vue文件并异步引入
  *@方法名: jsfn
  *@参数: 参数1
  *@作者: TangTao
@@ -20,9 +20,13 @@ Object.keys(modules).forEach((key) => {
   // 排除_Components文件夹下的文件
   if (nameMatch[1].includes("components")) return;
   let name = ucfirst(nameMatch[1]);
-  components[name] = modules[key] as () => Promise<typeof import("*.vue")>;
+  const moduleComponents = defineAsyncComponent(
+    modules[key] as unknown as () => Promise<typeof import("*.vue")>
+  );
+  components[name] = moduleComponents as unknown as () => Promise<
+    typeof import("*.vue")
+  >;
 });
-
 /*
  *@描述:路由解析并转换并引入vue
  *@方法名: jsfn
