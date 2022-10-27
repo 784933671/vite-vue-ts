@@ -50,7 +50,6 @@ const generatorDynamicRouter = (
     }
   };
   f(routerList);
-  console.log(routerList, "routerList");
   return routerList;
 };
 export { components, generatorDynamicRouter };
