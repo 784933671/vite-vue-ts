@@ -92,7 +92,12 @@ router.afterEach((to, from, failure) => {
     console.log("重复导航是指在启动时已经在同一位置失败的导航");
   } else if (isNavigationFailure(failure, NavigationFailureType.aborted)) {
     console.log("终止导航", to.fullPath);
+  } else if (isNavigationFailure(failure, NavigationFailureType.cancelled)) {
+    console.log("取消导航", to.fullPath);
   }
+});
+router.onError((error) => {
+  console.log("导航错误", error);
 });
 //页面刷新时调用
 router

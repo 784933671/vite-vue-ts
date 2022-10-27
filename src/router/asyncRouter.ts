@@ -1,9 +1,9 @@
 import { ucfirst } from "@/utils/tools";
 // 动态路由名称映射表
 const components: IObject<() => Promise<typeof import("*.vue")>> = {
-  Layout: defineAsyncComponent(
-    () => import("@/layout/index.vue")
-  ) as unknown as () => Promise<typeof import("*.vue")>,
+  Layout: (() => import("@/layout/index.vue")) as unknown as () => Promise<
+    typeof import("*.vue")
+  >,
 };
 /*
  *@描述:查找所有views下的vue文件并异步引入
@@ -20,10 +20,7 @@ Object.keys(modules).forEach((key) => {
   // 排除_Components文件夹下的文件
   if (nameMatch[1].includes("components")) return;
   let name = ucfirst(nameMatch[1]);
-  const moduleComponents = defineAsyncComponent(
-    modules[key] as unknown as () => Promise<typeof import("*.vue")>
-  );
-  components[name] = moduleComponents as unknown as () => Promise<
+  components[name] = modules[key] as unknown as () => Promise<
     typeof import("*.vue")
   >;
 });
@@ -47,10 +44,13 @@ const generatorDynamicRouter = (
       }
       if (v.children && v.children.length > 0) {
         f(v.children);
+      } else {
+        delete v.children;
       }
     }
   };
   f(routerList);
+  console.log(routerList, "routerList");
   return routerList;
 };
 export { components, generatorDynamicRouter };
